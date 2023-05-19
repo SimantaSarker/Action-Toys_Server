@@ -1,6 +1,6 @@
 const express=require("express");
 const cors=require("cors")
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app=express();
 require("dotenv").config();
 const port=process.env.PORT || 5000;
@@ -49,6 +49,32 @@ async function run() {
 
     })
 
+    app.patch('/toys/:id',async(req,res)=>{
+      const id=req.params.id;
+      const filter={_id:new ObjectId(id)};
+      const options={upsert:true};
+      const updatedValue=req.body;
+    
+      const toy={
+        $set:{
+          quantity:updatedValue.quantity,
+          price:updatedValue.price,
+          details:updatedValue.details,
+        }
+      }
+      const result=await ToyCollection.updateOne(filter,toy,options);
+      res.send(result)
+
+  
+    })
+
+    app.get('/toys/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={_id:new ObjectId(id)};
+      const result=await ToyCollection.findOne(query);
+      res.send(result)
+    })
+
 
     app.get('/toys',async(req,res)=>{
       // const result=await ToyCollection.find().limit(10).toArray();
@@ -56,6 +82,16 @@ async function run() {
       res.send(result)
     })
 
+
+    app.get('/myToys',async(req,res)=>{
+      let query={};
+      if(req.query?.email)
+      {
+        query={email:req.query.email}
+      }
+      const result=await ToyCollection.find(query).toArray();
+      res.send(result)
+    })
 
 
 
