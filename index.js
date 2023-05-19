@@ -68,6 +68,14 @@ async function run() {
   
     })
 
+
+      app.delete("/toys/:id", async (req,res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await ToyCollection.deleteOne(query);
+      res.send(result);
+    });
+
     app.get('/toys/:id',async(req,res)=>{
       const id=req.params.id;
       const query={_id:new ObjectId(id)};
