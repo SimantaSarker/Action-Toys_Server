@@ -84,7 +84,6 @@ async function run() {
 
     app.get("/toys", async (req, res) => {
       const result=await ToyCollection.find().limit(20).toArray();
-      // const result = await ToyCollection.find().toArray();
       res.send(result);
     });
 
@@ -105,15 +104,12 @@ async function run() {
         query = { email: body.email };
 
         const result = await ToyCollection.find(query)
-          .sort({ price: -1 })
-          .toArray();
+          .sort({ price: -1 }).collation({locale:"en_US",numericOrdering:true}).toArray();
         res.send(result);
       }
       if (sortValue == "-1") {
         query = { email: body.email };
-        const result = await ToyCollection.find(query)
-          .sort({ price: 1 })
-          .toArray();
+        const result = await ToyCollection.find(query) .sort({ price: 1 }).collation({locale:"en_US",numericOrdering:true}).toArray();
         res.send(result);
       }
     });
