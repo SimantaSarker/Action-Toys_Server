@@ -83,8 +83,8 @@ async function run() {
     });
 
     app.get("/toys", async (req, res) => {
-      // const result=await ToyCollection.find().limit(10).toArray();
-      const result = await ToyCollection.find().toArray();
+      const result=await ToyCollection.find().limit(20).toArray();
+      // const result = await ToyCollection.find().toArray();
       res.send(result);
     });
 
