@@ -118,6 +118,13 @@ async function run() {
       }
     });
 
+
+   app.get("/categories/:text",async(req,res)=>{
+    const tabValue=req.params.text;
+    const result=await ToyCollection.find({subCategory:tabValue}).toArray();
+    res.send(result)
+   })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
