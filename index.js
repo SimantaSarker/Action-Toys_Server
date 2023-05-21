@@ -1,6 +1,6 @@
 const express = require("express");
-const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 5000;
@@ -23,12 +23,12 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const ToyCollection = client.db("toyDB").collection("Toys");
 
-    const indexKeys = { name: 1 };
-    const indexOptions = { name: "toy" };
-    const result = await ToyCollection.createIndex(indexKeys, indexOptions);
+    // const indexKeys = { name: 1 };
+    // const indexOptions = { name: "toy" };
+    // const result = await ToyCollection.createIndex(indexKeys, indexOptions);
 
     app.get("/toysSearchByToyName/:text", async (req, res) => {
       const search = req.params.text;
@@ -44,12 +44,12 @@ async function run() {
       res.send(result);
     });
 
-    app.get("sortToys", async (req, res) => {
-      const sortValue = req.query;
-      if (sortValue == "asc") {
-        const result = await ToyCollection.find();
-      }
-    });
+    // app.get("sortToys", async (req, res) => {
+    //   const sortValue = req.query;
+    //   if (sortValue == "asc") {
+    //     const result = await ToyCollection.find();
+    //   }
+    // });
 
     app.patch("/toys/:id", async (req, res) => {
       const id = req.params.id;
@@ -83,7 +83,7 @@ async function run() {
     });
 
     app.get("/toys", async (req, res) => {
-      const result=await ToyCollection.find().limit(20).toArray();
+      const result=await ToyCollection.find({}).limit(20).toArray();
       res.send(result);
     });
 
@@ -122,7 +122,7 @@ async function run() {
    })
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
